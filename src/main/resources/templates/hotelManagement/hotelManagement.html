@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Hotel Management System</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://fonts.googleapis.com/css?family=Lato"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Montserrat"
+          rel="stylesheet" type="text/css"/>
+    <link
+            href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+            th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+            rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+
+    <script src="../../static/js/bootstrap.min.js"
+            th:src="@{~/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="../../static/css/hms.css" th:href="@{/css/hms.css}"/>
+</head>
+
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="container table-responsive">
+    <h2 class="text-center">Hotel Management</h2>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="form-group col-md-12" id="searchHotelContainer">
+            <label class="control-label col-sm-4" for="hotelSearch">Search Hotel:</label>
+            <div class="col-sm-8">
+                <input type="text" id="hotelSearch" name="hotelSearch"
+                       autofocus="autofocus"
+                       placeholder="search"
+                       th:required="required" class="form-control"/>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Hotel Name</th>
+            <th>Location</th>
+            <th>No. of employees</th>
+            <th>Availability</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody th:each="hotel:${hotels}">
+        <tr>
+            <td th:text="${hotel.id}"></td>
+            <td th:text="${hotel.name}"></td>
+            <td th:text="${hotel.location}"></td>
+            <td th:text="${hotel.employeeNo}"></td>
+            <td>
+                <input type="checkbox" th:checked="${hotel.availability}" disabled="true"/>
+            </td>
+            <td>
+                <a th:href="@{/hotelManagement/hotelInfo/{id}(id=${hotel.id})}" class="link-button"><img
+                        src="../../static/images/action/edit.png" width="30"
+                        class="img-rounded img-responsive"
+                        th:src="@{images/action/edit.png}"/></a>
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${hotels.totalPages - 1 > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a
+                th:href="@{/userManagement(page=${pageNumber})}"
+
+                th:text="${pageNumber}"
+
+                th:class="${pageNumber==hotels.number} ? active">
+
+        </a>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-8" id="usernameContainer">
+        </div>
+        <div class="col-md-4 text-center">
+            <button class="btn btn-primary btn-lg btn-success pull-right" onclick="location.href='/'">Back</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

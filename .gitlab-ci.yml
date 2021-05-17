@@ -1,0 +1,32 @@
+image: maven:latest
+
+build:
+  stage: build
+  tags:
+    - java
+  script:
+    - mvn clean install
+  except:
+    - master
+
+checkstyle:
+  stage: test
+  tags:
+    - java
+  script:
+    - mvn checkstyle:checkstyle
+  except:
+    - master
+
+test:
+  stage: test
+  script:
+    - mvn verify
+  tags:
+    - java
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xmls
+  except:
+    - master

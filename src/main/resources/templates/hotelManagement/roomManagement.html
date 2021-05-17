@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Hotel Management System</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://fonts.googleapis.com/css?family=Lato"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Montserrat"
+          rel="stylesheet" type="text/css"/>
+    <link
+            href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+            th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+            rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+
+    <script src="../../static/js/bootstrap.min.js"
+            th:src="@{~/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="../../static/css/hms.css" th:href="@{/css/hms.css}"/>
+</head>
+
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="container table-responsive">
+    <h2 class="text-center">Room Management</h2>
+    <br/>
+    <br/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Number</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Smoking</th>
+            <th>Pet friendly</th>
+            <th>Reserved</th>
+        </tr>
+        </thead>
+        <tbody th:each="room:${rooms}">
+        <tr>
+            <td th:text="${room.number}"></td>
+            <td th:text="${room.size}"></td>
+            <td th:text="${room.price}"></td>
+            <td>
+                <input type="checkbox" th:checked="${room.smoking}" disabled="true"/>
+            </td>
+            <td>
+                <input type="checkbox" th:checked="${room.petFriendly}" disabled="true"/>
+            </td>
+            <td>
+                <input type="checkbox" th:checked="${room.reserved}" disabled="true"/>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${rooms.totalPages - 1 > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a
+                th:href="@{/roomManagement(page=${pageNumber})}"
+
+                th:text="${pageNumber}"
+
+                th:class="${pageNumber==rooms.number} ? active">
+
+        </a>
+    </div>
+
+
+    <form action="#" th:action="@{/hotelManagement/roomManagement}" th:object="${roomFilter}" method="post"
+          class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-6">
+                <div >
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{smoking}" th:value="${smoking}"/>Smoking</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{petFriendly}"
+                                                          th:value="${petFriendly}"/>Pet
+                        friendly</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{reserved}"
+                                                          th:value="${reserved}"/>Reserved</label>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <button type="submit" class="btn btn-default btn-lg pull-right">Apply Filter
+                </button>
+            </div>
+        </div>
+        <br/>
+
+    </form>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <button class="btn btn-primary btn-lg btn-success " onclick="location.href='/hotelManagement/addRoom'">Add Room
+            </button>
+        </div>
+        <div class="col-md-6 text-center">
+            <button class="btn btn-primary btn-lg btn-success pull-right" onclick="location.href='/'">
+                Back
+            </button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

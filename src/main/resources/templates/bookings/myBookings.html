@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Hotel Management System</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://fonts.googleapis.com/css?family=Lato"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Montserrat"
+          rel="stylesheet" type="text/css"/>
+    <link
+            href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+            th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+            rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+
+    <script src="../../static/js/bootstrap.min.js"
+            th:src="@{~/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="../../static/css/hms.css" th:href="@{/css/hms.css}"/>
+</head>
+
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="container table-responsive">
+    <h2 class="text-center">My Bookings</h2>
+    <br/>
+    <br/>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Hotel</th>
+            <th>Room</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody th:each="booking:${bookings}">
+        <tr>
+            <td th:text="${booking.hotelName}"></td>
+            <td th:text="${booking.roomNumber}"></td>
+            <td th:text="${booking.startDate}"></td>
+            <td th:text="${booking.endDate}"></td>
+            <td>
+                <form class="col-md-4" method="POST" th:action="@{/bookings/myBookings/delete/{id}(id=${booking.id})}"
+                      style="height: 75px;width: 75px;">
+                    <button type="submit" name="submit" value="value"><img
+                            src="../../static/images/action/delete.png" width="65px" height="65px"
+                            class="img-rounded img-responsive"
+                            th:src="@{../images/action/delete.png}"/></button>
+                </form>
+
+                <a th:href="@{/bookings/myBookings/edit/{id}(id=${booking.id})}" class="col-md-4 link-button"
+                   style="height: 65px;width: 65px;"><img
+                        src="../../static/images/action/edit.png" width="100px" height="80px" style="padding:1px"
+                        class="img-rounded img-responsive"
+                        th:src="@{../images/action/edit.png}"/></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <button class="btn btn-primary btn-lg btn-success pull-right" onclick="location.href='/'">
+                Back
+            </button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

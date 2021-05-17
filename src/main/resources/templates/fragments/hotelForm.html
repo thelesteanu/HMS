@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Hotel Management System</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <link href="http://fonts.googleapis.com/css?family=Lato"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Montserrat"
+          rel="stylesheet" type="text/css"/>
+    <link
+            href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+            th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+            rel="stylesheet" media="screen"/>
+
+    <script src="../static/css/js/bootstrap.min.js"
+            th:src="@{~/js/bootstrap.min.js}"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="../static/css/hms.css" th:href="@{/css/hms.css}"/>
+</head>
+<body>
+<div th:fragment="hotelForm">
+    <div class="form-group" id="hotelNameContainer">
+        <label class="control-label col-sm-2" for="name">Name:</label>
+        <div class="col-sm-10">
+            <input type="text" id="name" th:value="${name}" th:field="*{name}" name="name"
+                   autofocus="autofocus"
+                   placeholder="name"
+                   th:required="required" class="form-control"/>
+        </div>
+    </div>
+
+
+    <div class="form-group" id="locationContainer">
+        <label class="control-label col-sm-2" for="name">Location:</label>
+        <div class="col-sm-10">
+            <input type="text" id="location" th:value="${location}" th:field="*{location}" name="location"
+                   autofocus="autofocus"
+                   placeholder="location"
+                   th:required="required" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="form-group" id="idContainer" style="display: none;">
+        <label class="control-label col-sm-2" for="id">Id:</label>
+        <div class="col-sm-10">
+            <input type="text" id="id" th:value="${hotelData.id}" th:field="*{id}" name="id"
+                   autofocus="autofocus"
+                   placeholder="id"
+                   th:required="required" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="description">Description:</label>
+        <div class="col-sm-10">
+                    <textarea class="form-control" id="description" name="description"
+                              th:inline="text" rows="5" placeholder="Description"
+                              th:value="${description}" th:field="*{description}" th:required="required"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group" id="employeesContainer">
+        <label class="control-label col-sm-2" for="name">Employee No:</label>
+        <div class="col-sm-10">
+            <input type="text" id="employeeNo" th:value="${employeeNo}" th:field="*{employeeNo}" name="employeeNo"
+                   autofocus="autofocus"
+                   placeholder="EmployeeNo"
+                   th:required="required" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="form-group" id="earnings">
+        <label class="control-label col-sm-2" for="name">Earnings:</label>
+        <div class="col-sm-10">
+            <input type="text" id="employeeNo" th:value="${earnings}" th:field="*{earnings}" name="earnings"
+                   autofocus="autofocus"
+                   placeholder="Earnings"
+                   th:required="required" class="form-control"/>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
