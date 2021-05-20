@@ -7,6 +7,7 @@ import com.hele.model.frontObjects.BookingData;
 import com.hele.security.MyUserPrincipal;
 import com.hele.service.HotelService;
 import com.hele.service.ReservationService;
+import com.hele.service.RoomService;
 import com.hele.utils.Pagination;
 import com.hele.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +33,20 @@ import static com.hele.model.util.Utils.*;
 @Controller
 public class BookingController {
 
-    private IndexController indexController;
-    private ReservationService reservationService;
-    private HotelService hotelService;
+    private final IndexController indexController;
+    private final ReservationService reservationService;
+    private final HotelService hotelService;
+    private final RoomService roomService;
 
     @Autowired
     public BookingController(final IndexController indexController,
                              final ReservationService reservationService,
-                             final HotelService hotelService) {
+                             final HotelService hotelService,
+                             final RoomService roomService) {
         this.indexController = indexController;
         this.reservationService = reservationService;
         this.hotelService = hotelService;
+        this.roomService = roomService;
     }
 
     /**
@@ -140,9 +144,7 @@ public class BookingController {
         List<HotelDto> hotelData = hotelService.getAllHotels();
 
         model.addAttribute("hotels", hotelData);
-
-
-        model.addAttribute("rooms", generateRooms());
+        model.addAttribute("rooms", roomService.getAllRooms());
 
         return "bookings/newBooking";
     }
@@ -218,10 +220,8 @@ public class BookingController {
 
         final BookingData myBooking = FrontBookingMapper.toBooking(reservationService.getReservationById(id));
         model.addAttribute("bookingData", myBooking);
-
-        model.addAttribute("hotels", generateMockHotels());
-        model.addAttribute("rooms", generateRooms());
-
+        model.addAttribute("hotels", hotelService.getAllHotels());
+        model.addAttribute("rooms", roomService.getAllRooms());
 
         return "bookings/editBooking";
     }

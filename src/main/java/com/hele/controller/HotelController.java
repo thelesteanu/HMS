@@ -1,10 +1,9 @@
 package com.hele.controller;
 
 import com.hele.dto.HotelDto;
+import com.hele.dto.RoomDto;
 import com.hele.dto.UserDto;
-import com.hele.model.mappers.FrontRoomMapper;
 import com.hele.model.filters.RoomFilter;
-import com.hele.model.frontObjects.RoomData;
 import com.hele.security.MyUserPrincipal;
 import com.hele.service.HotelService;
 import com.hele.service.RoomService;
@@ -23,17 +22,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hele.model.util.Utils.generateMockHotels;
-
-
 /**
  * Created by thelesteanu on 27.04.2021.
  */
 @Controller
 public class HotelController {
 
-    private HotelService hotelService;
-    private RoomService roomService;
+    private final HotelService hotelService;
+    private final RoomService roomService;
 
     @Autowired
     public HotelController(final HotelService hotelService,
@@ -118,9 +114,8 @@ public class HotelController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        final Page<RoomData> roomsData = roomService
-                .getPageableRoom(new Pagination(currentPage - 1, pageSize), roomFilter)
-                .map(FrontRoomMapper::toRoomData);
+        final Page<RoomDto> roomsData = roomService
+                .getPageableRoom(new Pagination(currentPage - 1, pageSize), roomFilter);
 
         model.addAttribute("rooms", roomsData);
 
@@ -165,9 +160,8 @@ public class HotelController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        final Page<RoomData> roomsData = roomService
-                .getPageableRoom(new Pagination(currentPage - 1, pageSize), roomFilter)
-                .map(FrontRoomMapper::toRoomData);
+        final Page<RoomDto> roomsData = roomService
+                .getPageableRoom(new Pagination(currentPage - 1, pageSize), roomFilter);
 
         model.addAttribute("rooms", roomsData);
 
@@ -189,8 +183,8 @@ public class HotelController {
      * @return
      */
     @RequestMapping(value = "/hotelManagement/addRoom", method = RequestMethod.GET)
-    public String addRoomScreen(@ModelAttribute(value = "roomData") RoomData roomData, Model model) {
-        final List<HotelDto> hotels = generateMockHotels(); //This should be the hotel list
+    public String addRoomScreen(@ModelAttribute(value = "roomData") RoomDto roomData, Model model) {
+        final List<HotelDto> hotels = hotelService.getAllHotels();
         model.addAttribute("hotels", hotels);
         return "hotelManagement/addRoom";
     }
@@ -203,9 +197,10 @@ public class HotelController {
      * @return
      */
     @RequestMapping(value = "/hotelManagement/addRoom", method = RequestMethod.POST)
-    public String addRoom(@ModelAttribute(value = "roomData") RoomData roomData, Model model) {
+    public String addRoom(@ModelAttribute(value = "roomData") RoomDto roomData, Model model) {
 
-        //TODO Add new room using room data.
+        roomService.saveRoom(roomData);
+
         return "redirect:/hotelManagement/roomManagement";
     }
 

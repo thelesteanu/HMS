@@ -68,7 +68,7 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto saveRoom(RoomDto roomDto) {
         Room room = RoomMapper.toEntity(roomDto);
 
-        room.setHotelId(hotelRepository.findOne(roomDto.getHotelInformationDto().getHotelId()));
+        room.setHotelId(hotelRepository.findOne(roomDto.getHotelId()));
 
         return RoomMapper.toDto(roomRepository.save(room));
     }

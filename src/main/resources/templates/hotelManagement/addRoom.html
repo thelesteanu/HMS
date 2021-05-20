@@ -59,6 +59,16 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="price">Room Number:</label>
+                    <div class="col-sm-10">
+                        <input type="number" id="roomNumber" th:value="${roomNumber}" th:field="*{roomNumber}" name="roomNumber"
+                               placeholder="room number"
+                               th:required="required" class="form-control"/>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="size">Size:</label>
                     <div class="col-md-4" th:object="${size}" >

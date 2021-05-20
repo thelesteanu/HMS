@@ -30,6 +30,27 @@
     <h2 class="text-center">Room Management</h2>
     <br/>
     <br/>
+    <form action="#" th:action="@{/hotelManagement/roomManagement}" th:object="${roomFilter}" method="post"
+          class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-6">
+                <div >
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{smoking}" th:value="${smoking}"/>Smoking</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{petFriendly}"
+                                                          th:value="${petFriendly}"/>Pet
+                        friendly</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{reserved}"
+                                                          th:value="${reserved}"/>Reserved</label>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <button type="submit" class="btn btn-default btn-lg pull-right">Apply Filter
+                </button>
+            </div>
+        </div>
+        <br/>
+
+    </form>
     <table class="table">
         <thead>
         <tr>
@@ -43,7 +64,7 @@
         </thead>
         <tbody th:each="room:${rooms}">
         <tr>
-            <td th:text="${room.number}"></td>
+            <td th:text="${room.roomNumber}"></td>
             <td th:text="${room.size}"></td>
             <td th:text="${room.price}"></td>
             <td>
@@ -72,27 +93,7 @@
     </div>
 
 
-    <form action="#" th:action="@{/hotelManagement/roomManagement}" th:object="${roomFilter}" method="post"
-          class="form-horizontal">
-        <div class="row">
-            <div class="col-lg-6">
-                <div >
-                    <label class="checkbox-inline"><input type="checkbox" th:field="*{smoking}" th:value="${smoking}"/>Smoking</label>
-                    <label class="checkbox-inline"><input type="checkbox" th:field="*{petFriendly}"
-                                                          th:value="${petFriendly}"/>Pet
-                        friendly</label>
-                    <label class="checkbox-inline"><input type="checkbox" th:field="*{reserved}"
-                                                          th:value="${reserved}"/>Reserved</label>
-                </div>
-            </div>
-            <div class="col-md-6 text-center">
-                <button type="submit" class="btn btn-default btn-lg pull-right">Apply Filter
-                </button>
-            </div>
-        </div>
-        <br/>
 
-    </form>
     <div class="row">
         <div class="col-md-6 text-center">
             <button class="btn btn-primary btn-lg btn-success " onclick="location.href='/hotelManagement/addRoom'">Add Room

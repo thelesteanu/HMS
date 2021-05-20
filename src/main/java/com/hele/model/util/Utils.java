@@ -3,7 +3,6 @@ package com.hele.model.util;
 import com.hele.dto.HotelDto;
 import com.hele.dto.RoomDto;
 import com.hele.model.frontObjects.BookingData;
-import com.hele.model.frontObjects.RoomData;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -60,37 +59,6 @@ public class Utils {
         }
 
         return hotels;
-    }
-
-    /**
-     * Method used to generate a room. TO BE DELETED
-     *
-     * @return
-     */
-    private static RoomData generateRoom() {
-        RoomData room = new RoomData();
-        room.setId(ThreadLocalRandom.current().nextLong(10000));
-        room.setNumber("" + ThreadLocalRandom.current().nextInt(10000));
-        room.setPetFriendly(ThreadLocalRandom.current().nextBoolean());
-        room.setReserved(ThreadLocalRandom.current().nextBoolean());
-        room.setSmoking(ThreadLocalRandom.current().nextBoolean());
-        room.setPrice(ThreadLocalRandom.current().nextLong(10000));
-        room.setSize(ThreadLocalRandom.current().nextLong(8));
-        return room;
-    }
-
-    /**
-     * Method used to generate a list of rooms. TO BE DELETED
-     *
-     * @return
-     */
-    public static List<RoomData> generateRooms() {
-        final List<RoomData> rooms = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            rooms.add(generateRoom());
-        }
-
-        return rooms;
     }
 
     /**
