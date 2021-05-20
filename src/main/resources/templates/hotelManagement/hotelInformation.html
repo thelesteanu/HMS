@@ -35,45 +35,46 @@
     </style>
     <script th:inline="javascript">
         $(document).ready(function () {
-            disableInputs();
-
-
-            $("#editButton").click(function () {
-                $('#hotelFormContainer input').prop('readonly', false);
-                $('#description').prop('readonly', false);
-                $("#saveButton").prop('disabled', false);
-
-            });
+            // disableInputs();
+            //
+            //
+            // $("#editButton").click(function () {
+            //     $('#hotelFormContainer input').prop('readonly', false);
+            //     $('#description').prop('readonly', false);
+            //     $("#saveButton").prop('disabled', false);
+            //
+            // });
         });
 
-        function disableInputs() {
-            $('#hotelFormContainer input').prop('readonly', true);
-            $('#description').prop('readonly', true);
-            $("#saveButton").prop('disabled', true);
-
-        }
+        // function disableInputs() {
+        //     $('#hotelFormContainer input').prop('readonly', true);
+        //     $('#description').prop('readonly', true);
+        //     $("#saveButton").prop('disabled', true);
+        //
+        // }
     </script>
 
 </head>
 
 <body>
 <div th:include="fragments/header :: header"></div>
-<h3 class="text-center">Hotel Information</h3>
+
 <div class="container">
+    <h3 class="text-center">Hotel Information</h3>
     <form action="#" th:action="@{/hotelManagement/hotelInfo}" th:object="${hotelData}" method="post"
-          class="form-horizontal"
-          id="hotelFormContainer">
+          class="form-horizontal">
         <div th:include="fragments/hotelForm :: hotelForm"></div>
         <div class="col-md-4 text-center">
-            <button type="submit" class="btn btn-primary btn-lg btn-success pull-right" id="saveButton">Save
+            <button type="submit" class="btn btn-primary btn-lg btn-success">Save
             </button>
         </div>
 
     </form>
-    <div class="col-md-4 text-center">
-        <button class="btn btn-primary btn-lg btn-success pull-right" id="editButton">Edit
-        </button>
-    </div>
+
+<!--    <div class="col-md-4 text-center">-->
+<!--        <button class="btn btn-primary btn-lg btn-success pull-right" id="editButton">Edit-->
+<!--        </button>-->
+<!--    </div>-->
     <div class="col-md-4 text-center">
         <button class="btn btn-primary btn-lg btn-success pull-right" onclick="location.href='/hotelManagement'">Back
         </button>

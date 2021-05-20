@@ -5,7 +5,7 @@ import com.hele.dto.RoomDto;
 import com.hele.entity.Hotel;
 import com.hele.entity.Room;
 
-public class RoomConverter {
+public class RoomMapper {
 
     public static RoomDto toDto(final Room room) {
 

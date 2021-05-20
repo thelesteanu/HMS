@@ -1,7 +1,8 @@
 package com.hele.controller;
 
 import com.hele.dto.HotelDto;
-import com.hele.model.Converters.FrontRoomConverter;
+import com.hele.dto.UserDto;
+import com.hele.model.mappers.FrontRoomMapper;
 import com.hele.model.filters.RoomFilter;
 import com.hele.model.frontObjects.RoomData;
 import com.hele.security.MyUserPrincipal;
@@ -22,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hele.model.Utils.Utils.generateMockHotels;
+import static com.hele.model.util.Utils.generateMockHotels;
 
 
 /**
@@ -94,8 +95,8 @@ public class HotelController {
      * @return
      */
     @RequestMapping(value = "/hotelManagement/hotelInfo", method = RequestMethod.POST)
-    public String hotelInformation(@ModelAttribute(value = "userData") HotelDto hotelData, Model model) {
-        hotelService.updateHotel(hotelData);
+    public String saveHotel(@ModelAttribute(value = "userData") HotelDto hotelData, Model model) {
+        hotelService.createOrUpdate(hotelData);
 
         return "redirect:/hotelManagement";
     }
@@ -119,7 +120,7 @@ public class HotelController {
 
         final Page<RoomData> roomsData = roomService
                 .getPageableRoom(new Pagination(currentPage - 1, pageSize), roomFilter)
-                .map(FrontRoomConverter::toRoomData);
+                .map(FrontRoomMapper::toRoomData);
 
         model.addAttribute("rooms", roomsData);
 
@@ -130,6 +131,22 @@ public class HotelController {
         model.addAttribute("pageNumbers", pageNumbers);
 
         return "hotelManagement/roomManagement";
+    }
+
+    /**
+     * Method used to redirect to add account.
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/hotelManagement/addHotel", method = RequestMethod.GET)
+    public String addHotel(@ModelAttribute(value = "userData") UserDto userData, Model model) {
+
+        HotelDto hotelData = new HotelDto();
+
+        model.addAttribute("hotelData", hotelData);
+
+        return "hotelManagement/hotelInformation";
     }
 
     /**
@@ -150,7 +167,7 @@ public class HotelController {
 
         final Page<RoomData> roomsData = roomService
                 .getPageableRoom(new Pagination(currentPage - 1, pageSize), roomFilter)
-                .map(FrontRoomConverter::toRoomData);
+                .map(FrontRoomMapper::toRoomData);
 
         model.addAttribute("rooms", roomsData);
 

@@ -14,7 +14,7 @@ public interface HotelService {
 
     Page<HotelDto> getPageableHotel(final Pagination pagination);
 
-    void updateHotel(final HotelDto hotelDto);
+    void createOrUpdate(final HotelDto hotelDto);
 
     List<HotelDto> getHotelsByOwnerId(final Long ownerId);
 

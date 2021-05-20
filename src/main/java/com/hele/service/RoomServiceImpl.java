@@ -1,6 +1,6 @@
 package com.hele.service;
 
-import com.hele.mappers.RoomConverter;
+import com.hele.mappers.RoomMapper;
 import com.hele.dto.RoomDto;
 import com.hele.entity.Room;
 import com.hele.repository.HotelRepository;
@@ -34,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(readOnly = true)
     public RoomDto getRoomById(final Long id) {
         Room room = roomRepository.findOne(id);
-        return RoomConverter.toDto(room);
+        return RoomMapper.toDto(room);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDto> getRoomsByIds(List<Long> roomIds) {
         List<Room> rooms = roomRepository.getAllByIds(roomIds);
         return rooms.stream()
-                .map(RoomConverter::toDto)
+                .map(RoomMapper::toDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -50,7 +50,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(readOnly = true)
     public List<RoomDto> getAllRooms() {
         return roomRepository.findAll().stream()
-                .map(RoomConverter::toDto)
+                .map(RoomMapper::toDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -61,15 +61,15 @@ public class RoomServiceImpl implements RoomService {
 
         RoomSpecification spec = new RoomSpecification(roomFilter);
 
-        return roomRepository.findAll(spec, pageRequest).map(RoomConverter::toDto);
+        return roomRepository.findAll(spec, pageRequest).map(RoomMapper::toDto);
     }
 
     @Override
     public RoomDto saveRoom(RoomDto roomDto) {
-        Room room = RoomConverter.toEntity(roomDto);
+        Room room = RoomMapper.toEntity(roomDto);
 
         room.setHotelId(hotelRepository.findOne(roomDto.getHotelInformationDto().getHotelId()));
 
-        return RoomConverter.toDto(roomRepository.save(room));
+        return RoomMapper.toDto(roomRepository.save(room));
     }
 }

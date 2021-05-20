@@ -1,4 +1,4 @@
-package com.hele.model.Utils;
+package com.hele.model.util;
 
 import com.hele.dto.HotelDto;
 import com.hele.dto.RoomDto;

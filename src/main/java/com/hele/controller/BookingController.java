@@ -2,7 +2,7 @@ package com.hele.controller;
 
 import com.hele.dto.HotelDto;
 import com.hele.dto.ReservationDto;
-import com.hele.model.Converters.FrontBookingConverter;
+import com.hele.model.mappers.FrontBookingMapper;
 import com.hele.model.frontObjects.BookingData;
 import com.hele.security.MyUserPrincipal;
 import com.hele.service.HotelService;
@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hele.model.Utils.Utils.*;
+import static com.hele.model.util.Utils.*;
 
 /**
  * Created by thelesteanu on 27.04.2021.
@@ -73,7 +73,7 @@ public class BookingController {
 
         Page<BookingData> bookings = reservationService
                 .getReservationsByHotelIds(new Pagination(currentPage - 1, pageSize), hotelIds)
-                .map(FrontBookingConverter::toBooking);
+                .map(FrontBookingMapper::toBooking);
 
         model.addAttribute("bookings", bookings);
         model.addAttribute("hotels", hotelData);
@@ -111,7 +111,7 @@ public class BookingController {
 
         Page<BookingData> bookings = reservationService
                 .getReservationsByHotelIds(new Pagination(currentPage - 1, pageSize), hotelIds)
-                .map(FrontBookingConverter::toBooking);
+                .map(FrontBookingMapper::toBooking);
 
         model.addAttribute("bookings", bookings);
         model.addAttribute("hotels", hotelData);
@@ -177,7 +177,7 @@ public class BookingController {
 
         final List<BookingData> bookings = reservationDtoList.getContent()
                 .stream()
-                .map(FrontBookingConverter::toBooking)
+                .map(FrontBookingMapper::toBooking)
                 .collect(Collectors.toList());
 
         model.addAttribute("bookings", bookings);
@@ -216,7 +216,7 @@ public class BookingController {
     @RequestMapping(value = "/bookings/myBookings/edit/{id}", method = RequestMethod.GET)
     public String editBooking(@PathVariable Long id, Model model) {
 
-        final BookingData myBooking = FrontBookingConverter.toBooking(reservationService.getReservationById(id));
+        final BookingData myBooking = FrontBookingMapper.toBooking(reservationService.getReservationById(id));
         model.addAttribute("bookingData", myBooking);
 
         model.addAttribute("hotels", generateMockHotels());

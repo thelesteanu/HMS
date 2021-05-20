@@ -3,7 +3,7 @@ package com.hele.service;
 
 import com.hele.dto.UserDto;
 import com.hele.entity.User;
-import com.hele.mappers.UserConverter;
+import com.hele.mappers.UserMapper;
 import com.hele.repository.HotelRepository;
 import com.hele.repository.UserRepository;
 import com.hele.utils.Pagination;
@@ -37,18 +37,18 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserDto getUserById(final Long id) {
         User user = userRepository.findOne(id);
-        return UserConverter.toUserDto(user);
+        return UserMapper.toUserDto(user);
     }
 
     @Override
     @Transactional
     public UserDto registerUser(final UserDto userDto) {
-        User user = UserConverter.toUser(userDto);
+        User user = UserMapper.toUser(userDto);
         user.setRegistrationDate(OffsetDateTime.now());
         user.setRole(Role.CLIENT);
         user.setPassword(new BCryptPasswordEncoder(11).encode(userDto.getPassword()));
 
-        return UserConverter.toUserDto(userRepository.save(user));
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
@@ -56,15 +56,15 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(UserConverter::toUserDto)
+                .map(UserMapper::toUserDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     @Transactional
     public UserDto updateUser(UserDto userDto) {
-        User user = UserConverter.toUser(userDto);
-        return UserConverter.toUserDto(userRepository.save(user));
+        User user = UserMapper.toUser(userDto);
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public Page<UserDto> getPageableUser(final Pagination pagination) {
         PageRequest pageRequest = new PageRequest(pagination.getPageNumber(), pagination.getPageSize());
 
-        return userRepository.findAll(pageRequest).map(UserConverter::toUserDto);
+        return userRepository.findAll(pageRequest).map(UserMapper::toUserDto);
     }
 
     @Override

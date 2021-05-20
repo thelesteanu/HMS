@@ -7,11 +7,11 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-public class UserConverter {
+public class UserMapper {
 
     private static Validator validator;
 
-    public UserConverter() {
+    public UserMapper() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }

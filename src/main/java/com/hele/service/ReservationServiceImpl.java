@@ -1,6 +1,6 @@
 package com.hele.service;
 
-import com.hele.mappers.ReservationConverter;
+import com.hele.mappers.ReservationMapper;
 import com.hele.dto.ReservationDto;
 import com.hele.entity.Reservation;
 import com.hele.repository.ReservationRepository;
@@ -31,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional(readOnly = true)
     public ReservationDto getReservationById(final Long id) {
-        return ReservationConverter.toDto(reservationRepository.findOne(id));
+        return ReservationMapper.toDto(reservationRepository.findOne(id));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
         PageRequest pageRequest = new PageRequest(pagination.getPageNumber(), pagination.getPageSize());
 
         return reservationRepository.getReservationsByUserId(id, pageRequest)
-                .map(ReservationConverter::toDto);
+                .map(ReservationMapper::toDto);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
         PageRequest pageRequest = new PageRequest(pagination.getPageNumber(), pagination.getPageSize());
 
         return reservationRepository.findAll(pageRequest)
-                .map(ReservationConverter::toDto);
+                .map(ReservationMapper::toDto);
     }
 
     @Override
@@ -58,16 +58,16 @@ public class ReservationServiceImpl implements ReservationService {
         PageRequest pageRequest = new PageRequest(pagination.getPageNumber(), pagination.getPageSize());
 
         return reservationRepository.getReservationsByHotelIds(ids, pageRequest)
-                .map(ReservationConverter::toDto);
+                .map(ReservationMapper::toDto);
     }
 
     @Override
     @Transactional
     public ReservationDto registerReservation(final ReservationDto reservationDto) {
-        Reservation reservation = ReservationConverter.toReservation(reservationDto);
+        Reservation reservation = ReservationMapper.toReservation(reservationDto);
 
         reservation.setRoomId(roomRepository.findOne(reservationDto.getRoomInformationDto().getRoomId()));
 
-        return ReservationConverter.toDto(reservationRepository.save(reservation));
+        return ReservationMapper.toDto(reservationRepository.save(reservation));
     }
 }

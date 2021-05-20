@@ -2,7 +2,7 @@ package com.hele.service;
 
 import com.hele.entity.User;
 import com.hele.repository.UserRepository;
-import com.hele.mappers.HotelConverter;
+import com.hele.mappers.HotelMapper;
 import com.hele.dto.HotelDto;
 import com.hele.entity.Hotel;
 import com.hele.repository.HotelRepository;
@@ -34,14 +34,14 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(readOnly = true)
     public HotelDto getHotelById(final Long id) {
         Hotel hotel = hotelRepository.findOne(id);
-        return HotelConverter.toDto(hotel);
+        return HotelMapper.toDto(hotel);
     }
 
     @Override
     public List<HotelDto> getHotelsByIds(final List<Long> hotelIds) {
         List<Hotel> hotels = hotelRepository.getAllByIdIs(hotelIds);
         return hotels.stream()
-                .map(HotelConverter::toDto)
+                .map(HotelMapper::toDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -51,15 +51,21 @@ public class HotelServiceImpl implements HotelService {
         PageRequest pageRequest = new PageRequest(pagination.getPageNumber(), pagination.getPageSize());
 
         return hotelRepository.findAll(pageRequest)
-                .map(HotelConverter::toDto);
+                .map(HotelMapper::toDto);
     }
 
     @Override
     @Transactional
-    public void updateHotel(HotelDto hotelDto) {
-        hotelRepository.updateHotel(hotelDto.getId(), hotelDto.getName(),
-                hotelDto.getDescription(), hotelDto.getEmployeeNumber(),
-                hotelDto.getEarnings());
+    public void createOrUpdate(HotelDto hotelDto) {
+        if(hotelDto.getId()==null){
+            hotelRepository.saveAndFlush(HotelMapper.toEntity(hotelDto));
+        }
+        else{
+            hotelRepository.updateHotel(hotelDto.getId(), hotelDto.getName(),
+                    hotelDto.getDescription(), hotelDto.getEmployeeNumber(),
+                    hotelDto.getEarnings());
+        }
+
     }
 
     @Override
@@ -70,7 +76,7 @@ public class HotelServiceImpl implements HotelService {
 
         List<Hotel> hotels = hotelRepository.getAllByOwnerId(owner);
         return hotels.stream()
-                .map(HotelConverter::toDto)
+                .map(HotelMapper::toDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -79,7 +85,7 @@ public class HotelServiceImpl implements HotelService {
     public List<HotelDto> getAllHotels() {
         return hotelRepository.findAll()
                 .stream()
-                .map(HotelConverter::toDto)
+                .map(HotelMapper::toDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }

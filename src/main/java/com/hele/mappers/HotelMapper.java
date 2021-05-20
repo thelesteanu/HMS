@@ -3,7 +3,7 @@ package com.hele.mappers;
 import com.hele.dto.HotelDto;
 import com.hele.entity.Hotel;
 
-public class HotelConverter {
+public class HotelMapper {
 
     public static HotelDto toDto(final Hotel hotel) {
 

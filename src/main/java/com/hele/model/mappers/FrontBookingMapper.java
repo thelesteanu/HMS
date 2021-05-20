@@ -1,11 +1,11 @@
-package com.hele.model.Converters;
+package com.hele.model.mappers;
 
 import com.hele.dto.ReservationDto;
 import com.hele.model.frontObjects.BookingData;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FrontBookingConverter {
+public class FrontBookingMapper {
 
     public static BookingData toBooking(final ReservationDto reservationDto) {
         return BookingData.builder()

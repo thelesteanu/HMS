@@ -1,11 +1,11 @@
-package com.hele.model.Converters;
+package com.hele.model.mappers;
 
 import com.hele.dto.RoomDto;
 import com.hele.model.frontObjects.RoomData;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FrontRoomConverter {
+public class FrontRoomMapper {
 
     public static RoomData toRoomData(final RoomDto roomDto) {
         return RoomData.builder()

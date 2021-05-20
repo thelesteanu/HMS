@@ -5,9 +5,9 @@ import com.hele.entity.Reservation;
 import com.hele.dto.RoomInformationDto;
 import com.hele.entity.Room;
 
-import static com.hele.mappers.RoomConverter.getHotelInformation;
+import static com.hele.mappers.RoomMapper.getHotelInformation;
 
-public class ReservationConverter {
+public class ReservationMapper {
 
     public static ReservationDto toDto(final Reservation reservation) {
         return ReservationDto.builder()
