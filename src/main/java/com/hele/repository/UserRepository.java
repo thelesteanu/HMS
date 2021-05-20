@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query("update user r set r.username =?2, r.role = ?3 where r.id =?1")
-    User updateUsernameAndRole(final Long id, final String username, final Role role);
+    void updateUsernameAndRole(final Long id, final String username, final Role role);
 }

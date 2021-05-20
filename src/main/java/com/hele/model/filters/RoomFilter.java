@@ -1,7 +1,7 @@
 package com.hele.model.filters;
 
 /**
- * Created by thelesteanu on 09.05.2017.
+ * Created by thelesteanu on 09.05.2021.
  */
 public class RoomFilter {
     private Boolean smoking;

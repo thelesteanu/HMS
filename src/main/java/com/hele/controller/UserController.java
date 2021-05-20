@@ -1,13 +1,11 @@
 package com.hele.controller;
 
+import com.hele.dto.HotelDto;
 import com.hele.dto.UserDto;
+import com.hele.security.MyUserPrincipal;
 import com.hele.service.UserService;
 import com.hele.utils.Pagination;
 import com.hele.utils.Role;
-import com.hele.model.Converters.FrontUserConverter;
-import com.hele.model.frontObjects.HotelData;
-import com.hele.model.frontObjects.UserData;
-import com.hele.security.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -16,30 +14,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.hele.model.Utils.Utils.generateMockHotels;
+
 /**
- * Created by thelesteanu on 26.04.2017.
+ * Created by thelesteanu on 26.04.2021.
  */
 @Controller
 public class UserController {
 
-    private IndexController indexController;
-    private UserService userService;
-    private FrontUserConverter userConverter;
+    private final IndexController indexController;
+    private final UserService userService;
 
     @Autowired
     public UserController(final IndexController indexController,
-                          final UserService userService,
-                          final FrontUserConverter userConverter) {
+                          final UserService userService) {
         this.indexController = indexController;
         this.userService = userService;
-        this.userConverter = userConverter;
     }
 
     /**
@@ -52,7 +47,7 @@ public class UserController {
     public String myAccount(Model model) {
         Long loggedUserId = indexController.getLoggedUserId();
 
-        UserData loggedUserData = userConverter.toUserData(userService.getUserById(loggedUserId));
+        UserDto loggedUserData = userService.getUserById(loggedUserId);
 
         model.addAttribute("userData", loggedUserData);
         return "common/myAccount";
@@ -66,10 +61,10 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/myAccount", method = RequestMethod.POST)
-    public String updateAccount(@ModelAttribute(value = "userData") UserData userData, Model model) {
+    public String updateAccount(@ModelAttribute(value = "userData") UserDto userData, Model model) {
         Long loggedUserId = indexController.getLoggedUserId();
 
-        UserData loggedUserData = FrontUserConverter.toUserData(userService.getUserById(loggedUserId));
+        UserDto loggedUserData = userService.getUserById(loggedUserId);
 
         userData.setId(loggedUserData.getId());
         userData.setRegistrationDate(loggedUserData.getRegistrationDate());
@@ -78,9 +73,7 @@ public class UserController {
         userData.setBirthDate(loggedUserData.getBirthDate());
         userData.setRole(loggedUserData.getRole());
 
-        UserDto userDto = FrontUserConverter.toUserDto(userData);
-
-        userService.updateUser(userDto);
+        userService.updateUser(userData);
 
         model.addAttribute("userData", userData);
         return "common/myAccount";
@@ -100,9 +93,9 @@ public class UserController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        final Page<UserData> usersData = userService
-                .getPageableUser(new Pagination(currentPage - 1, pageSize))
-                .map(FrontUserConverter::toUserData);
+        final Page<UserDto> usersData = userService
+                .getPageableUser(new Pagination(currentPage - 1, pageSize));
+
 
         model.addAttribute("users", usersData);
 
@@ -136,9 +129,9 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/userManagement/addAccount", method = RequestMethod.GET)
-    public String addAccount(@ModelAttribute(value = "userData") UserData userData, Model model) {
+    public String addAccount(@ModelAttribute(value = "userData") UserDto userData, Model model) {
         //Add account
-        final List<HotelData> hotels = generateMockHotels(); //This should be the hotel list of the owner/manager
+        final List<HotelDto> hotels = generateMockHotels(); //This should be the hotel list of the owner/manager
         model.addAttribute("hotels", hotels);
         return "userManagement/addAccount";
     }
@@ -151,7 +144,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/userManagement/addAccount", method = RequestMethod.POST)
-    public String registerAccount(@ModelAttribute(value = "userData") UserData userData, Model model) {
+    public String registerAccount(@ModelAttribute(value = "userData") UserDto userData, Model model) {
 
         //Save this new account
         return "redirect:/userManagement";
@@ -159,7 +152,7 @@ public class UserController {
 
     @RequestMapping(value = "/userManagement/edit/{id}", method = RequestMethod.GET)
     public String editAccount(@PathVariable Long id, Model model) {
-        UserData userData = FrontUserConverter.toUserData(userService.getUserById(id));
+        UserDto userData = userService.getUserById(id);
 
         model.addAttribute("userData", userData);
 
@@ -167,9 +160,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/userManagement/edit", method = RequestMethod.POST)
-    public String editAccount(@ModelAttribute(value = "userData") UserData userData, Model model) {
+    public String editAccount(@ModelAttribute(value = "userData") UserDto userData, Model model) {
 
-        userService.updateUsernameAndRole(FrontUserConverter.toUserDto(userData));
+        userService.updateUsernameAndRole(userData);
 
         return "redirect:/userManagement";
     }
@@ -193,36 +186,6 @@ public class UserController {
             MyUserPrincipal principal = (MyUserPrincipal) authentication.getPrincipal();
             return principal.getAuthorities().contains(Role.OWNER);
         } else return false;
-    }
-
-
-    /**
-     * Method used to generate a list of hotels.  : TO BE DELETED
-     *
-     * @return
-     */
-    private List<HotelData> generateMockHotels() {
-        final List<HotelData> hotels = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            hotels.add(createHotelMock());
-        }
-
-        return hotels;
-    }
-
-    /**
-     * Method used to create a hotel. TO BE DELETED
-     *
-     * @return
-     */
-    private HotelData createHotelMock() {
-        final HotelData hotel = new HotelData();
-        hotel.setId(ThreadLocalRandom.current().nextLong(10000));
-        hotel.setName("Hilton");
-        hotel.setLocation("Paris");
-        hotel.setEmployeeNo(ThreadLocalRandom.current().nextLong(500));
-        hotel.setAvailability(Math.random() < 0.5);
-        return hotel;
     }
 
 }

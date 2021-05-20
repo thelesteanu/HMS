@@ -68,9 +68,9 @@
     <div class="form-group" id="employeesContainer">
         <label class="control-label col-sm-2" for="name">Employee No:</label>
         <div class="col-sm-10">
-            <input type="text" id="employeeNo" th:value="${employeeNo}" th:field="*{employeeNo}" name="employeeNo"
+            <input type="text" id="employeeNumber" th:value="${employeeNumber}" th:field="*{employeeNumber}" name="employeeNumber"
                    autofocus="autofocus"
-                   placeholder="EmployeeNo"
+                   placeholder="EmployeeNumber"
                    th:required="required" class="form-control"/>
         </div>
     </div>
@@ -78,7 +78,7 @@
     <div class="form-group" id="earnings">
         <label class="control-label col-sm-2" for="name">Earnings:</label>
         <div class="col-sm-10">
-            <input type="text" id="employeeNo" th:value="${earnings}" th:field="*{earnings}" name="earnings"
+            <input type="text" id="earnings" th:value="${earnings}" th:field="*{earnings}" name="earnings"
                    autofocus="autofocus"
                    placeholder="Earnings"
                    th:required="required" class="form-control"/>

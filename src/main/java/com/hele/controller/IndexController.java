@@ -1,8 +1,8 @@
 package com.hele.controller;
 
+import com.hele.dto.UserDto;
 import com.hele.service.UserServiceImpl;
 import com.hele.utils.Role;
-import com.hele.model.frontObjects.UserData;
 import com.hele.security.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.ConstraintViolationException;
 
-import static com.hele.model.Converters.FrontUserConverter.toUserDto;
-
 /**
- * Created by thelesteanu on 25.04.2017.
+ * Created by thelesteanu on 25.04.2021.
  */
 
 @Controller
@@ -49,29 +47,27 @@ public class IndexController {
     /**
      * Method used to show the register page.
      *
-     * @param userData
+     * @param userDto
      * @param model
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String showRegister(@ModelAttribute(value = "userData") UserData userData, Model model) {
+    public String showRegister(@ModelAttribute(value = "userData") UserDto userDto, Model model) {
         return "common/register";
     }
 
     /**
      * Method used to register the user.
      *
-     * @param userData
+     * @param userDto
      * @param model
      * @return
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerUser(@ModelAttribute(value = "userData") UserData userData, Model model) {
-
-
+    public String registerUser(@ModelAttribute(value = "userData") UserDto userDto, Model model) {
         try {
-            userService.registerUser(toUserDto(userData));
+            userService.registerUser(userDto);
             return "common/userRegistered";
         } catch (ConstraintViolationException ex) {
             String errorMessage = ex.getConstraintViolations().iterator().next().getPropertyPath() + " - " + ex.getConstraintViolations().iterator().next().getMessage();

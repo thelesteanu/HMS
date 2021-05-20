@@ -18,5 +18,5 @@ public interface UserService {
 
     Page<UserDto> getPageableUser(final Pagination pagination);
 
-    UserDto updateUsernameAndRole(final UserDto userDto);
+    void updateUsernameAndRole(final UserDto userDto);
 }

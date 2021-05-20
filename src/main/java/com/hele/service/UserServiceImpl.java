@@ -1,12 +1,13 @@
 package com.hele.service;
 
 
-import com.hele.mappers.UserConverter;
 import com.hele.dto.UserDto;
 import com.hele.entity.User;
-import com.hele.repository.UserRepository;
+import com.hele.mappers.UserConverter;
 import com.hele.repository.HotelRepository;
+import com.hele.repository.UserRepository;
 import com.hele.utils.Pagination;
+import com.hele.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,10 +44,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto registerUser(final UserDto userDto) {
         User user = UserConverter.toUser(userDto);
-
+        user.setRegistrationDate(OffsetDateTime.now());
+        user.setRole(Role.CLIENT);
         user.setPassword(new BCryptPasswordEncoder(11).encode(userDto.getPassword()));
-
-       //CHECK THIS user.setHotelId(hotelRepository.findOne(userDto.getHotelId()));
 
         return UserConverter.toUserDto(userRepository.save(user));
     }
@@ -71,13 +72,12 @@ public class UserServiceImpl implements UserService {
     public Page<UserDto> getPageableUser(final Pagination pagination) {
         PageRequest pageRequest = new PageRequest(pagination.getPageNumber(), pagination.getPageSize());
 
-        return userRepository.findAll(pageRequest)
-                .map(UserConverter::toUserDto);
+        return userRepository.findAll(pageRequest).map(UserConverter::toUserDto);
     }
 
     @Override
     @Transactional
-    public UserDto updateUsernameAndRole(final UserDto userDto) {
-        return UserConverter.toUserDto(userRepository.updateUsernameAndRole(userDto.getId(), userDto.getUsername(), userDto.getRole()));
+    public void updateUsernameAndRole(final UserDto userDto) {
+        userRepository.updateUsernameAndRole(userDto.getId(), userDto.getUsername(), userDto.getRole());
     }
 }

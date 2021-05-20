@@ -57,7 +57,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     @Transactional
     public void updateHotel(HotelDto hotelDto) {
-        hotelRepository.updateHotel(hotelDto.getId(), hotelDto.getHotelName(),
+        hotelRepository.updateHotel(hotelDto.getId(), hotelDto.getName(),
                 hotelDto.getDescription(), hotelDto.getEmployeeNumber(),
                 hotelDto.getEarnings());
     }

@@ -50,7 +50,7 @@
             <td>
                 <form class="col-md-4" method="POST" th:action="@{/bookings/myBookings/delete/{id}(id=${booking.id})}"
                       style="height: 75px;width: 75px;">
-                    <button type="submit" name="submit" value="value"><img
+                    <button type="submit" name="submit" value="value" class="delete-button"><img
                             src="../../static/images/action/delete.png" width="65px" height="65px"
                             class="img-rounded img-responsive"
                             th:src="@{../images/action/delete.png}"/></button>

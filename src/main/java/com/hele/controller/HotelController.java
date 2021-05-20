@@ -1,15 +1,14 @@
 package com.hele.controller;
 
+import com.hele.dto.HotelDto;
+import com.hele.model.Converters.FrontRoomConverter;
+import com.hele.model.filters.RoomFilter;
+import com.hele.model.frontObjects.RoomData;
+import com.hele.security.MyUserPrincipal;
 import com.hele.service.HotelService;
 import com.hele.service.RoomService;
 import com.hele.utils.Pagination;
 import com.hele.utils.Role;
-import com.hele.model.Converters.FrontHotelConverter;
-import com.hele.model.Converters.FrontRoomConverter;
-import com.hele.model.filters.RoomFilter;
-import com.hele.model.frontObjects.HotelData;
-import com.hele.model.frontObjects.RoomData;
-import com.hele.security.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -18,18 +17,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hele.model.Converters.FrontHotelConverter.toHotelData;
-import static com.hele.model.Converters.FrontHotelConverter.toHotelDto;
+import static com.hele.model.Utils.Utils.generateMockHotels;
+
 
 /**
- * Created by thelesteanu on 27.04.2017.
+ * Created by thelesteanu on 27.04.2021.
  */
 @Controller
 public class HotelController {
@@ -58,8 +55,7 @@ public class HotelController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        final Page<HotelData> hotelsData = hotelService.getPageableHotel(new Pagination(currentPage - 1, pageSize))
-                .map(FrontHotelConverter::toHotelData);
+        final Page<HotelDto> hotelsData = hotelService.getPageableHotel(new Pagination(currentPage - 1, pageSize));
 
         model.addAttribute("hotels", hotelsData);
 
@@ -82,7 +78,7 @@ public class HotelController {
      */
     @RequestMapping(value = "/hotelManagement/hotelInfo/{id}", method = RequestMethod.GET)
     public String hotelInformation(@PathVariable Long id, Model model) {
-        HotelData hotelData = toHotelData(hotelService.getHotelById(id));
+        HotelDto hotelData = hotelService.getHotelById(id);
 
         model.addAttribute("hotelData", hotelData);
 
@@ -98,8 +94,8 @@ public class HotelController {
      * @return
      */
     @RequestMapping(value = "/hotelManagement/hotelInfo", method = RequestMethod.POST)
-    public String hotelInformation(@ModelAttribute(value = "userData") HotelData hotelData, Model model) {
-        hotelService.updateHotel(toHotelDto(hotelData));
+    public String hotelInformation(@ModelAttribute(value = "userData") HotelDto hotelData, Model model) {
+        hotelService.updateHotel(hotelData);
 
         return "redirect:/hotelManagement";
     }
@@ -177,7 +173,7 @@ public class HotelController {
      */
     @RequestMapping(value = "/hotelManagement/addRoom", method = RequestMethod.GET)
     public String addRoomScreen(@ModelAttribute(value = "roomData") RoomData roomData, Model model) {
-        final List<HotelData> hotels = generateMockHotels(); //This should be the hotel list
+        final List<HotelDto> hotels = generateMockHotels(); //This should be the hotel list
         model.addAttribute("hotels", hotels);
         return "hotelManagement/addRoom";
     }
@@ -196,39 +192,6 @@ public class HotelController {
         return "redirect:/hotelManagement/roomManagement";
     }
 
-
-    /**
-     * Method used to create a hotel. TO BE DELETED
-     *
-     * @return
-     */
-    private HotelData createHotelMock() {
-        final HotelData hotel = new HotelData();
-        hotel.setId(ThreadLocalRandom.current().nextLong(10000));
-        hotel.setName("Hilton");
-        hotel.setLocation("Paris");
-        hotel.setEarnings((long) 1235839);
-        hotel.setDescription("Hilton Hotels & Resorts is Hilton's flagship brand and one of the largest hotel brands in" +
-                " the world.The brand is targeted at both business and leisure travelers with locations in major city " +
-                "centers, near airports, convention centers, and popular vacation destinations around the world.");
-        hotel.setEmployeeNo(ThreadLocalRandom.current().nextLong(500));
-        hotel.setAvailability(ThreadLocalRandom.current().nextBoolean());
-        return hotel;
-    }
-
-    /**
-     * Method used to generate a list of hotels. TO BE DELETED
-     *
-     * @return
-     */
-    private List<HotelData> generateMockHotels() {
-        final List<HotelData> hotels = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            hotels.add(createHotelMock());
-        }
-
-        return hotels;
-    }
 
     /**
      * Method called automatically from thymeleaf when the loggedIn parameter is checked. We no longer need to add the

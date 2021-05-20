@@ -50,7 +50,7 @@
         <div class="col-md-4" th:object="${role}">
             <select class="form-control col-sm-10" data-style="btn-primary" style="margin-right:
                 15px;display: inline-block;" name="role" id="role" th:required="required">
-                <option th:each="role : ${T(com.hele.model.enums.RoleEnum).values()}"
+                <option th:each="role : ${T(com.hele.utils.Role).values()}"
                         th:value="${role}"
                         th:text="${role}"
                         th:selected="${role == userData.role}"></option>

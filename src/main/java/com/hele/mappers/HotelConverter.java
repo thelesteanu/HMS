@@ -9,7 +9,7 @@ public class HotelConverter {
 
         return HotelDto.builder()
                 .id(hotel.getId())
-                .hotelName(hotel.getHotelName())
+                .name(hotel.getHotelName())
                 .location(hotel.getLocation())
                 .description(hotel.getDescription())
                 .employeeNumber(hotel.getEmployeeNumber())
@@ -22,7 +22,7 @@ public class HotelConverter {
 
         return Hotel.builder()
                 .id(hotelDto.getId())
-                .hotelName(hotelDto.getHotelName())
+                .hotelName(hotelDto.getName())
                 .location(hotelDto.getLocation())
                 .description(hotelDto.getDescription())
                 .employeeNumber(hotelDto.getEmployeeNumber())
