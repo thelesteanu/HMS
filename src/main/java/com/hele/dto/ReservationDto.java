@@ -1,9 +1,6 @@
 package com.hele.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -11,6 +8,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class ReservationDto {
 
     private Long id;

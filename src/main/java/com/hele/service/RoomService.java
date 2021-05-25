@@ -2,7 +2,7 @@ package com.hele.service;
 
 import com.hele.dto.RoomDto;
 import com.hele.utils.Pagination;
-import com.hele.model.filters.RoomFilter;
+import com.hele.dto.RoomFilter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

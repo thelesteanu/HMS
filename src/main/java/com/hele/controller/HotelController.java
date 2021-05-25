@@ -3,7 +3,7 @@ package com.hele.controller;
 import com.hele.dto.HotelDto;
 import com.hele.dto.RoomDto;
 import com.hele.dto.UserDto;
-import com.hele.model.filters.RoomFilter;
+import com.hele.dto.RoomFilter;
 import com.hele.security.MyUserPrincipal;
 import com.hele.service.HotelService;
 import com.hele.service.RoomService;

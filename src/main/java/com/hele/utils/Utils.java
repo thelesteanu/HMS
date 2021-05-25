@@ -1,32 +1,15 @@
-package com.hele.model.util;
+package com.hele.utils;
 
-import com.hele.dto.HotelDto;
-import com.hele.dto.RoomDto;
-import com.hele.model.frontObjects.BookingData;
+import com.hele.dto.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 @Component
 public class Utils {
-
-    public static List<BookingData> populateBookings(final List<RoomDto> roomDtoList,
-                                                     final List<BookingData> bookings) {
-        return bookings.stream().peek(bookingData -> {
-            for (RoomDto r : roomDtoList) {
-                if (bookingData.getRoomId().equals(r.getId())) {
-                    bookingData.setRoomNumber(r.getRoomNumber());
-                    bookingData.setHotelId(r.getHotelInformationDto().getHotelId());
-                    bookingData.setHotelName(r.getHotelInformationDto().getHotelName());
-                    bookingData.setHotelLocation(r.getHotelInformationDto().getHotelLocation());
-                }
-            }
-        }).collect(Collectors.toList());
-    }
 
     /**
      * Method used to create a hotel. TO BE DELETED
@@ -66,17 +49,26 @@ public class Utils {
      *
      * @return
      */
-    public static BookingData generateBooking() {
-        final BookingData booking = new BookingData();
+    public static ReservationDto generateBooking() {
+        final ReservationDto booking = new ReservationDto();
+
+        //final BookingData booking = new BookingData();
         booking.setId(ThreadLocalRandom.current().nextLong(10000));
-        booking.setHotelId(ThreadLocalRandom.current().nextLong(10000));
         booking.setUserId(ThreadLocalRandom.current().nextLong(10000));
-        booking.setRoomId(ThreadLocalRandom.current().nextLong(10000));
         booking.setStartDate(new Date());
-        booking.setHotelName("Hilton");
-        booking.setHotelLocation("Paris");
-        booking.setRoomNumber("13");
         booking.setEndDate(new Date());
+
+        HotelInformationDto hotelInfo = new HotelInformationDto();
+        hotelInfo.setHotelId(ThreadLocalRandom.current().nextLong(10000));
+        hotelInfo.setHotelName("Hilton");
+        hotelInfo.setHotelLocation("Paris");
+
+        RoomInformationDto roomInfo = new RoomInformationDto();
+        roomInfo.setRoomId(ThreadLocalRandom.current().nextLong(10000));
+        roomInfo.setRoomNumber("13");
+        roomInfo.setHotelInformationDto(hotelInfo);
+
+        booking.setRoomInformationDto(roomInfo);
         return booking;
     }
 

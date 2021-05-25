@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hele.model.util.Utils.generateMockHotels;
+import static com.hele.utils.Utils.generateMockHotels;
 
 /**
  * Created by thelesteanu on 26.04.2021.

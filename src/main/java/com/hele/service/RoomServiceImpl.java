@@ -6,7 +6,7 @@ import com.hele.entity.Room;
 import com.hele.repository.HotelRepository;
 import com.hele.repository.RoomRepository;
 import com.hele.utils.Pagination;
-import com.hele.model.filters.RoomFilter;
+import com.hele.dto.RoomFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

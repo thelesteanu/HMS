@@ -2,8 +2,6 @@ package com.hele.controller;
 
 import com.hele.dto.HotelDto;
 import com.hele.dto.ReservationDto;
-import com.hele.model.mappers.FrontBookingMapper;
-import com.hele.model.frontObjects.BookingData;
 import com.hele.security.MyUserPrincipal;
 import com.hele.service.HotelService;
 import com.hele.service.ReservationService;
@@ -25,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hele.model.util.Utils.*;
+import static com.hele.utils.Utils.*;
 
 /**
  * Created by thelesteanu on 27.04.2021.
@@ -75,10 +73,8 @@ public class BookingController {
                 .map(HotelDto::getId)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        Page<BookingData> bookings = reservationService
-                .getReservationsByHotelIds(new Pagination(currentPage - 1, pageSize), hotelIds)
-                .map(FrontBookingMapper::toBooking);
-
+        Page<ReservationDto> bookings = reservationService
+                .getReservationsByHotelIds(new Pagination(currentPage - 1, pageSize), hotelIds);
         model.addAttribute("bookings", bookings);
         model.addAttribute("hotels", hotelData);
 
@@ -113,9 +109,8 @@ public class BookingController {
                 .map(HotelDto::getId)
                 .collect(Collectors.toList());
 
-        Page<BookingData> bookings = reservationService
-                .getReservationsByHotelIds(new Pagination(currentPage - 1, pageSize), hotelIds)
-                .map(FrontBookingMapper::toBooking);
+        Page<ReservationDto> bookings = reservationService
+                .getReservationsByHotelIds(new Pagination(currentPage - 1, pageSize), hotelIds);
 
         model.addAttribute("bookings", bookings);
         model.addAttribute("hotels", hotelData);
@@ -139,7 +134,7 @@ public class BookingController {
 
 
     @RequestMapping(value = "/bookings/newBooking", method = RequestMethod.GET)
-    public String newBooking(@ModelAttribute(value = "bookingData") BookingData bookingData, Model model) {
+    public String newBooking(@ModelAttribute(value = "bookingData") ReservationDto bookingData, Model model) {
 
         List<HotelDto> hotelData = hotelService.getAllHotels();
 
@@ -150,7 +145,7 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/bookings/newBooking", method = RequestMethod.POST)
-    public String newBookingCreation(@ModelAttribute(value = "bookingData") BookingData bookingData, Model model) {
+    public String newBookingCreation(@ModelAttribute(value = "bookingData") ReservationDto bookingData, Model model) {
 
         model.addAttribute("booking", generateBooking());
         //Save the booking.
@@ -165,7 +160,7 @@ public class BookingController {
      * @return
      */
     @RequestMapping(value = "/bookings/myBookings", method = RequestMethod.GET)
-    public String myBookings(@ModelAttribute(value = "bookingData") BookingData bookingData,
+    public String myBookings(@ModelAttribute(value = "bookingData") ReservationDto bookingData,
                              Model model,
                              @RequestParam("page") Optional<Integer> page,
                              @RequestParam("pageSize") Optional<Integer> size) {
@@ -177,12 +172,7 @@ public class BookingController {
 
         final Page<ReservationDto> reservationDtoList = reservationService.getReservationsByUserId(new Pagination(currentPage - 1, pageSize), loggedUserId);
 
-        final List<BookingData> bookings = reservationDtoList.getContent()
-                .stream()
-                .map(FrontBookingMapper::toBooking)
-                .collect(Collectors.toList());
-
-        model.addAttribute("bookings", bookings);
+        model.addAttribute("bookings", reservationDtoList.getContent());
 
         List<Integer> pageNumbers = IntStream.rangeClosed(1, reservationDtoList.getTotalPages() - 1)
                 .boxed()
@@ -218,8 +208,7 @@ public class BookingController {
     @RequestMapping(value = "/bookings/myBookings/edit/{id}", method = RequestMethod.GET)
     public String editBooking(@PathVariable Long id, Model model) {
 
-        final BookingData myBooking = FrontBookingMapper.toBooking(reservationService.getReservationById(id));
-        model.addAttribute("bookingData", myBooking);
+        model.addAttribute("bookingData", reservationService.getReservationById(id));
         model.addAttribute("hotels", hotelService.getAllHotels());
         model.addAttribute("rooms", roomService.getAllRooms());
 
@@ -234,7 +223,7 @@ public class BookingController {
      * @return
      */
     @RequestMapping(value = "/bookings/myBookings/save", method = RequestMethod.POST)
-    public String saveBooking(@ModelAttribute(value = "bookingData") BookingData bookingData, Model model) {
+    public String saveBooking(@ModelAttribute(value = "bookingData") ReservationDto bookingData, Model model) {
         //save booking
         return "redirect:/bookings/myBookings";
     }

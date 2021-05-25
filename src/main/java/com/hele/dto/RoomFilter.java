@@ -1,4 +1,4 @@
-package com.hele.model.filters;
+package com.hele.dto;
 
 /**
  * Created by thelesteanu on 09.05.2021.

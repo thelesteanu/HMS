@@ -1,7 +1,7 @@
 package com.hele.service;
 
 import com.hele.entity.Room;
-import com.hele.model.filters.RoomFilter;
+import com.hele.dto.RoomFilter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;

@@ -36,10 +36,10 @@
         Congratulations, the reservation has been successful!
         <br/>
         We will be waiting for your arrival on the <span style="font-weight: bold;" th:text="${booking.startDate}"/> at
-        <span style="font-weight: bold;" th:text="${booking.hotelName}"/> in <span style="font-weight: bold;"
-                                                                                   th:text="${booking.hotelLocation}"/>.
+        <span style="font-weight: bold;" th:text="${booking.roomInformationDto.hotelInformationDto.hotelName}"/> in <span style="font-weight: bold;"
+                                                                                   th:text="${booking.roomInformationDto.hotelInformationDto.hotelLocation}"/>.
         <br/>
-        You will be staying in room <span style="font-weight: bold;" th:text="${booking.roomNumber}"/>!
+        You will be staying in room <span style="font-weight: bold;" th:text="${booking.roomInformationDto.roomNumber}"/>!
         <br/>
         Have a great Day!
     </div>

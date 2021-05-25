@@ -23,7 +23,7 @@ import javax.validation.ConstraintViolationException;
 @Controller
 public class IndexController {
 
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
     @Autowired
     public IndexController(final UserServiceImpl userService) {
